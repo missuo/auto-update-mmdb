@@ -17,7 +17,7 @@ import (
 const (
 	apiURL   = "https://api.github.com/repos/P3TERX/GeoLite.mmdb/releases/latest"
 	saveMMDB = "/usr/share/GeoIP/GeoLite2-Country.mmdb"
-	tmpMMDB  = "/tmp/GeoLite2-Country.mmdb"
+	tmpMMDB  = "./GeoLite2-Country.mmdb"
 
 	outCN4 = "/etc/nftables.d/cn4.nft"
 	outCN6 = "/etc/nftables.d/cn6.nft"
