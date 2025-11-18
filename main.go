@@ -47,6 +47,23 @@ func logErr(err error) {
 	fmt.Printf("[%s] ERROR: %v\n", time.Now().Format(time.RFC3339), err)
 }
 
+func copyFile(src, dst string) error {
+	sourceFile, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer sourceFile.Close()
+
+	destFile, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer destFile.Close()
+
+	_, err = io.Copy(destFile, sourceFile)
+	return err
+}
+
 func main() {
 	logInfo("Fetching latest GitHub release metadata...")
 
@@ -113,10 +130,11 @@ func main() {
 
 	// 4. Replace system MMDB
 	logInfo("Replacing old MMDB...")
-	if err := os.Rename(tmpMMDB, saveMMDB); err != nil {
+	if err := copyFile(tmpMMDB, saveMMDB); err != nil {
 		logErr(err)
 		os.Exit(1)
 	}
+	os.Remove(tmpMMDB) // Clean up temp file
 
 	// 5. Parse MMDB and extract CN networks
 	logInfo("Parsing MMDB and generating nftables sets...")
