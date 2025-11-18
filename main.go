@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"time"
 
 	maxminddb "github.com/oschwald/maxminddb-golang"
@@ -86,13 +85,13 @@ func main() {
 	// 2. Find mmdb download URL
 	var downloadURL string
 	for _, a := range release.Assets {
-		if filepath.Ext(a.Name) == ".mmdb" {
+		if a.Name == "GeoLite2-Country.mmdb" {
 			downloadURL = a.BrowserDownloadURL
 			break
 		}
 	}
 	if downloadURL == "" {
-		logErr(fmt.Errorf("no mmdb file found in release"))
+		logErr(fmt.Errorf("GeoLite2-Country.mmdb not found in release"))
 		os.Exit(1)
 	}
 
